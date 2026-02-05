@@ -8,26 +8,22 @@ package:
 source:
   - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
     sha256: b99180d8f33d33a077b814e550bfb2d8a59ae003d668fd1f4b3fff62a381d34b
-  # As there is no tag in the mlx-examples repo, we need to reference a commit here.
-  - url: https://raw.githubusercontent.com/ml-explore/mlx-examples/a932012c1291b675e74f899d671883b7c41eb0db/LICENSE
-    fn: LICENSE
-    sha256: ccfab7ccb2ea306f71531c8ca77bb55507606cd90768b1e32b8b52ab5b48cf01
 
 build:
-  noarch: python
+  skip: true # [py<310 or not (osx and aarch64)]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python
     - pip
     - setuptools
   run:
     - sentencepiece
     - jinja2
     - pyyaml
-    - python >={{ python_min }}
+    - python
     - mlx >=0.29.2
     - numpy
     - transformers >=4.39.3
@@ -40,13 +36,23 @@ test:
     - pip check
   requires:
     - pip
-    - python {{ python_min }}
+    - python
 
 about:
-  home: https://github.com/ml-explore/mlx-examples
+  home: https://github.com/ml-explore/mlx-lm
   summary: LLMs on Apple silicon with MLX and the Hugging Face Hub
+  description: |
+    MLX LM is a Python package for generating text and fine-tuning large language
+    models on Apple silicon with MLX. Some key features include integration with
+    the Hugging Face Hub to easily use thousands of LLMs with a single command,
+    support for quantizing and uploading models to the Hugging Face Hub, low-rank
+    and full model fine-tuning with support for quantized models, distributed
+    inference and fine-tuning with mx.distributed
   license: MIT
+  license_family: MIT
   license_file: LICENSE
+  dev_url: https://github.com/ml-explore/mlx-lm
+  doc_url: https://github.com/ml-explore/mlx-lm
 
 extra:
   recipe-maintainers:
