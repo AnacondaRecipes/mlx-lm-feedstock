@@ -1,5 +1,5 @@
 {% set name = "mlx-lm" %}
-{% set version = "0.29.1" %}
+{% set version = "0.31.3" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-    sha256: b99180d8f33d33a077b814e550bfb2d8a59ae003d668fd1f4b3fff62a381d34b
+    sha256: 61eb0e3ba09444f77f874aff295401d7ccd20b39495cbbce0c782a15474ce733
 
 build:
-  skip: true # [py<310 or not (osx and arm64)]
+  skip: true  # [py<310 or not (osx and arm64)]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
@@ -20,14 +20,14 @@ requirements:
     - pip
     - setuptools
   run:
-    - sentencepiece
-    - jinja2
-    - pyyaml
     - python
-    - mlx >=0.29.2
+    - mlx >=0.31.2
     - numpy
-    - transformers >=4.39.3
+    - transformers >=5.0.0
+    - sentencepiece
     - protobuf
+    - pyyaml
+    - jinja2
 
 test:
   imports:
