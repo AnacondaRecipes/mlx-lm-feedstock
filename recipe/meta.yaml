@@ -34,6 +34,7 @@ test:
     - mlx_lm
   commands:
     - pip check
+    - mlx_lm.generate --help
   requires:
     - pip
     - python
