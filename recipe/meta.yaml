@@ -21,7 +21,7 @@ requirements:
     - setuptools
   run:
     - python
-    - mlx >=0.31.2
+    - mlx >=0.31.2  # [osx]
     - numpy
     - transformers >=5.0.0
     - sentencepiece
@@ -34,7 +34,26 @@ test:
     - mlx_lm
   commands:
     - pip check
+    # Smoke-test every console_script entry point; --help exits via argparse
+    # before any model/network work. mlx_lm.evaluate is omitted: it imports
+    # lm_eval (the "evaluate" extra), which is not a runtime dependency.
+    - mlx_lm --help
+    - mlx_lm.awq --help
+    - mlx_lm.benchmark --help
+    - mlx_lm.cache_prompt --help
+    - mlx_lm.chat --help
+    - mlx_lm.convert --help
+    - mlx_lm.dwq --help
+    - mlx_lm.dynamic_quant --help
+    - mlx_lm.fuse --help
     - mlx_lm.generate --help
+    - mlx_lm.gptq --help
+    - mlx_lm.lora --help
+    - mlx_lm.manage --help
+    - mlx_lm.perplexity --help
+    - mlx_lm.server --help
+    - mlx_lm.share --help
+    - mlx_lm.upload --help
   requires:
     - pip
     - python
