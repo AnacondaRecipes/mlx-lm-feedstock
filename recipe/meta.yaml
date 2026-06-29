@@ -21,7 +21,7 @@ requirements:
     - setuptools
   run:
     - python
-    - mlx >=0.31.2  # [osx]
+    - mlx >=0.31.2
     - numpy
     - transformers >=5.0.0
     - sentencepiece
