@@ -1,16 +1,16 @@
 {% set name = "mlx-lm" %}
-{% set version = "0.31.3" %}
+{% set version = "0.32.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-    sha256: 61eb0e3ba09444f77f874aff295401d7ccd20b39495cbbce0c782a15474ce733
+    sha256: 035ca44b08c3476630a205d2c9bdea26825a6a8359f974944d4985230e41859f
 
 build:
-  skip: true  # [py<310 or not (osx and arm64)]
+  skip: true  # [py<311 or not (osx and arm64)]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
@@ -18,18 +18,21 @@ requirements:
   host:
     - python
     - pip
-    - setuptools
+    - setuptools >=80
+    - setuptools-scm >=9
   run:
     - python
-    - mlx >=0.31.2
+    - mlx >=0.32.2
     - numpy
-    - transformers >=5.0.0
+    - transformers >=5.7.0
     - sentencepiece
     - protobuf
     - pyyaml
     - jinja2
 
 test:
+  source_files:
+    - tests
   imports:
     - mlx_lm
   commands:
@@ -54,9 +57,14 @@ test:
     - mlx_lm.server --help
     - mlx_lm.share --help
     - mlx_lm.upload --help
+    # Run self-contained upstream unit tests that do not require network access,
+    # external model data, optional test dependencies, or Metal-specific execution.
+    # Deselect one numerical edge-case test that fails on the CI MLX backend.
+    - pytest -v tests/test_sample_utils.py tests/test_tool_parsing.py --deselect=tests/test_sample_utils.py::TestSampleUtils::test_apply_top_p_keeps_top_token_at_tiny_thresholds
   requires:
     - pip
     - python
+    - pytest
 
 about:
   home: https://github.com/ml-explore/mlx-lm
